@@ -5,4 +5,5 @@ export interface Professor {
     telefone: string
     CPF: string
     departamento: string
+    ativo: boolean
   }
