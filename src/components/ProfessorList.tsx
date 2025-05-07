@@ -6,6 +6,8 @@ export default function ProfessorList() {
 
     const [professoresAtivos, setProfessoresAtivos] = useState<Professor[]>([])
     const [professoresInativos, setProfessoresInativos] = useState<Professor[]>([])
+    const [searchTermAtivos, setSearchTermAtivos] = useState<string>("")
+    const [searchTermInativos, setSearchTermInativos] = useState<string>("")
 
   useEffect(() => {
     const fetchProfessores = async () => {
@@ -29,9 +31,24 @@ export default function ProfessorList() {
     fetchProfessores()
   }, [])
     
+    const filteredProfessoresAtivos = professoresAtivos.filter(prof =>
+        prof.nome.toLowerCase().includes(searchTermAtivos.toLowerCase())
+    );
+
+    const filteredProfessoresInativos = professoresInativos.filter(prof =>
+        prof.nome.toLowerCase().includes(searchTermInativos.toLowerCase())
+    );
+    
     return (
         <div>
-        <h1>Lista de Professores</h1>
+        <h1>Lista de Professores Ativos</h1>
+        <input
+          type="text"
+          placeholder="Buscar professor ativo..."
+          value={searchTermAtivos}
+          onChange={(e) => setSearchTermAtivos(e.target.value)}
+          style={{ marginBottom: '10px', padding: '8px', width: 'calc(100% - 16px)' }}
+        />
         <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }}>
           <thead>
             <tr>
@@ -43,7 +60,7 @@ export default function ProfessorList() {
             </tr>
           </thead>
           <tbody>
-            {professoresAtivos.map(prof => (
+            {filteredProfessoresAtivos.map(prof => (
               <tr key={prof.id}>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.nome}</td>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.email}</td>
@@ -56,6 +73,13 @@ export default function ProfessorList() {
         </table>
 
         <h1>Lista de Professores Inativos</h1>
+        <input
+          type="text"
+          placeholder="Buscar professor inativo..."
+          value={searchTermInativos}
+          onChange={(e) => setSearchTermInativos(e.target.value)}
+          style={{ marginBottom: '10px', padding: '8px', width: 'calc(100% - 16px)' }}
+        />
         <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }}>
           <thead>
             <tr>
@@ -67,7 +91,7 @@ export default function ProfessorList() {
             </tr>
           </thead>
           <tbody>
-            {professoresInativos.map(prof => (
+            {filteredProfessoresInativos.map(prof => (
               <tr key={prof.id}>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.nome}</td>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.email}</td>
