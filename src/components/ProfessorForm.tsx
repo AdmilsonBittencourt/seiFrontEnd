@@ -88,9 +88,13 @@ const ProfessorForm = forwardRef<ProfessorFormHandles, ProfessorFormProps>(({ on
             }
             closeDialog();
             await onFormSubmit();
-        } catch (error) {
+        } catch (error: any) { // Adicionado ': any' para acessar error.response
             console.error(`Erro ao ${mode === 'edit' ? 'editar' : 'adicionar'} professor:`, error);
-            alert(`Erro ao ${mode === 'edit' ? 'editar' : 'adicionar'} professor. Verifique o console.`);
+            // Verifica se a resposta de erro e a mensagem específica existem
+            const errorMessage = error.response && error.response.data && error.response.data.error
+                ? error.response.data.error
+                : `Erro ao ${mode === 'edit' ? 'editar' : 'adicionar'} professor. Verifique o console.`;
+            alert(errorMessage);
         }
     };
 

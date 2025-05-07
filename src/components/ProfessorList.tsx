@@ -117,7 +117,7 @@ export default function ProfessorList() {
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Telefone</th>
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>CPF</th>
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Departamento</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Ações</th> {/* Alterado cabeçalho */}
+              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Ações</th> 
             </tr>
           </thead>
           <tbody>
@@ -165,8 +165,7 @@ export default function ProfessorList() {
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.CPF}</td>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.departamento}</td>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}> 
-                <button onClick={() => handleReactivate(prof.id)}>Reativar</button>
-                
+                    <button onClick={() => handleReactivate(prof.id)}>Reativar</button>
                 </td>
               </tr>
             ))}
