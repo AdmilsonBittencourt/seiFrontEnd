@@ -1,7 +1,9 @@
+import SalaList from "../components/SalaList";
+
 export default function Salas() {
     return (
       <div>
-          <h1>Salas</h1>
+          <SalaList/>
       </div>
     )
   }
