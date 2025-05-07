@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import api from "../api/axios";
-import type { Turma } from "../types/interfaceTurma";
+import type { Turma, TurmaInterfaces } from "../types/interfaceTurma";
 import TurmaForm, { type TurmaFormHandles } from "./TurmaForm";
 
 export default function TurmaList() {
-    const [turmasAtivas, setTurmasAtivas] = useState<Turma[]>([]);
-    const [turmasInativas, setTurmasInativas] = useState<Turma[]>([]);
+    const [turmasAtivas, setTurmasAtivas] = useState<TurmaInterfaces[]>([]);
+    const [turmasInativas, setTurmasInativas] = useState<TurmaInterfaces[]>([]);
     const [searchTermAtivos, setSearchTermAtivos] = useState<string>("");
     const [searchTermInativos, setSearchTermInativos] = useState<string>("");
     const turmaFormRef = useRef<TurmaFormHandles>(null);
@@ -13,9 +13,9 @@ export default function TurmaList() {
     const fetchTurmas = async () => {
         try {
             const res = await api.get("/turmas");
-            const turmas = res.data.sort((a: Turma, b: Turma) => a.codigo.localeCompare(b.codigo));
-            const ativas = turmas.filter((turma: Turma) => turma.ativo);
-            const inativas = turmas.filter((turma: Turma) => !turma.ativo);
+            const turmas = res.data.sort((a: TurmaInterfaces, b: TurmaInterfaces) => a.codigo.localeCompare(b.codigo));
+            const ativas = turmas.filter((turma: TurmaInterfaces) => turma.ativo);
+            const inativas = turmas.filter((turma: TurmaInterfaces) => !turma.ativo);
             setTurmasAtivas(ativas);
             setTurmasInativas(inativas);
         } catch (error) {
@@ -37,15 +37,15 @@ export default function TurmaList() {
         turma.semestre.toLowerCase().includes(searchTermInativos.toLowerCase())
     );
 
-    const handleDeactivate = async (codigo: string | undefined) => {
-        if (!codigo) return;
+    const handleDeactivate = async (id: number | undefined) => {
+        if (!id) return;
     
         if (!window.confirm("Tem certeza que deseja desativar esta turma?")) {
             return;
-        }
+        } 
     
         try {
-            const response = await api.patch(`/turmas/${codigo}/desativar`);
+            const response = await api.patch(`/turmas/${id}/desativar`);
             if (response.status === 200 || response.status === 204) {
                 await fetchTurmas();
                 alert("Turma desativada com sucesso!");
@@ -56,15 +56,15 @@ export default function TurmaList() {
         }
     };
 
-    const handleReactivate = async (codigo: string | undefined) => {
-        if (!codigo) return;
+    const handleReactivate = async (id: number | undefined) => {
+        if (!id) return;
     
         if (!window.confirm("Tem certeza que deseja reativar esta turma?")) {
             return;
         }
     
         try {
-            const response = await api.patch(`/turmas/${codigo}/reativar`);
+            const response = await api.patch(`/turmas/${id}/reativar`);
             if (response.status === 200 || response.status === 204) {
                 await fetchTurmas();
                 alert("Turma reativada com sucesso!");
@@ -115,16 +115,25 @@ export default function TurmaList() {
               </thead>
               <tbody>
                 {filteredTurmasAtivas.map(turma => (
-                  <tr key={turma.codigo}>
+                  <tr key={turma.id}>
                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.codigo}</td>
                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.semestre}</td>
                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.horario}</td>
-                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.id_sala}</td>
-                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.id_professor}</td>
-                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.id_disciplina}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.sala.nome}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.professor.nome}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.disciplina.nome}</td>
                     <td style={{ border: '1px solid #ddd', padding: '8px' }}> 
-                        <button onClick={() => handleOpenEditForm(turma)} style={{ marginRight: '5px' }}>Editar</button>
-                        <button onClick={() => handleDeactivate(turma.codigo)}>Desativar</button>
+                        <button onClick={() => handleOpenEditForm({
+                          id: turma.id!,
+                          ativo: turma.ativo,
+                          codigo: turma.codigo,
+                          horario: turma.horario,
+                          id_disciplina: turma.disciplina.id!,
+                          id_professor: turma.professor.id!,
+                          id_sala: turma.sala.id!,
+                          semestre: turma.semestre,
+                        })} style={{ marginRight: '5px' }}>Editar</button>
+                        <button onClick={() => handleDeactivate(turma.id)}>Desativar</button>
                     </td>
                   </tr>
                 ))}
@@ -157,11 +166,11 @@ export default function TurmaList() {
                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.codigo}</td>
                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.semestre}</td>
                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.horario}</td>
-                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.id_sala}</td>
-                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.id_professor}</td>
-                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.id_disciplina}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.sala.nome}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.professor.nome}</td>
+                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>{turma.disciplina.nome}</td>
                     <td style={{ border: '1px solid #ddd', padding: '8px' }}> 
-                        <button onClick={() => handleReactivate(turma.codigo)}>Reativar</button>
+                        <button onClick={() => handleReactivate(turma.id)}>Reativar</button>
                     </td>
                   </tr>
                 ))}
