@@ -84,7 +84,7 @@ const TurmaForm = forwardRef<TurmaFormHandles, TurmaFormProps>(({ onFormSubmit }
             id_professor: Number(formData.id_professor),
             id_disciplina: Number(formData.id_disciplina),
         };
-
+        console.log("Payload enviado:", payload); // 
         try {
             if (mode === 'edit' && editingTurmaCodigo) {
                 const response = await api.put(`/turmas/${editingTurmaCodigo}`, payload);
@@ -95,6 +95,7 @@ const TurmaForm = forwardRef<TurmaFormHandles, TurmaFormProps>(({ onFormSubmit }
                 // ou deve ser validado para unicidade.
                 // Se o código é parte do payload de criação:
                 const response = await api.post("/turmas", payload);
+                console.log(formData);
                 console.log("Turma adicionada:", response.data);
                 alert("Turma adicionada com sucesso!");
             }
