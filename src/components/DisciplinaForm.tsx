@@ -17,7 +17,7 @@ interface DisciplinaFormProps {
 
 // Tipagem para as funções expostas pelo ref
 // Adicionando 'id' à interface Disciplina para uso interno no formulário, assumindo que a API retorna um ID.
-export interface DisciplinaWithId extends Disciplina {
+export interface DisciplinaWithId extends Omit<Disciplina, 'id'> {
     id?: number | string;
 }
 export interface DisciplinaFormHandles {
