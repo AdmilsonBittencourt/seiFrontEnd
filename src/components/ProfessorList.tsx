@@ -1,6 +1,4 @@
-
-
-import { useEffect, useState, useRef } from "react" // Adicionado useRef
+  import { useEffect, useState, useRef } from "react" // Adicionado useRef
 import api from "../api/axios"
 import type { Professor } from "../types/interfaceProfessor"
 import ProfessorForm, { type ProfessorFormHandles } from "./ProfessorForm" // Importar ProfessorFormHandles
