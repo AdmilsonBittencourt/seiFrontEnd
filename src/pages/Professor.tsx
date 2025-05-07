@@ -1,9 +1,10 @@
-
 import ProfessorList from "../components/ProfessorList"
 
 const ProfessorPage = () => {
   return (
-    <ProfessorList/>
+    <>
+      <ProfessorList/>
+    </>
   )
 }
 

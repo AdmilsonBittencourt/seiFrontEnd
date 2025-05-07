@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import api from "../api/axios"
 import type { Professor } from "../types/interfaceProfessor"
+import ProfessorForm from "./ProfessorForm"
 
 export default function ProfessorList() {
 
@@ -80,6 +81,10 @@ export default function ProfessorList() {
           console.error("Erro ao desativar professor:", error)
         }
     }
+
+    const handleFetchProfessores = async () => {
+        await fetchProfessores()
+    };
     
     return (
         <div>
@@ -99,6 +104,7 @@ export default function ProfessorList() {
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Telefone</th>
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>CPF</th>
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Departamento</th>
+              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Deletar/Editar</th>
             </tr>
           </thead>
           <tbody>
@@ -110,7 +116,7 @@ export default function ProfessorList() {
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.CPF}</td>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.departamento}</td>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}> 
-                <button onClick={() => handleDelete(prof.id)}>Desativar</button>
+                    <button onClick={() => handleDelete(prof.id)}>Desativar</button>
                 </td>
               </tr>
             ))}
@@ -133,6 +139,7 @@ export default function ProfessorList() {
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Telefone</th>
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>CPF</th>
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Departamento</th>
+              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Reativar</th>
             </tr>
           </thead>
           <tbody>
@@ -145,15 +152,15 @@ export default function ProfessorList() {
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.departamento}</td>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}> 
                 <button onClick={() => handleReactivate(prof.id)}>Reativar</button>
+                
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        <ProfessorForm onProfessorAdded={handleFetchProfessores} />
       </div>
     )
   }
 
-function fetchProfessores() {
-        throw new Error("Function not implemented.")
-    }
