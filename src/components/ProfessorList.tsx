@@ -1,16 +1,16 @@
 
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react" // Adicionado useRef
 import api from "../api/axios"
 import type { Professor } from "../types/interfaceProfessor"
-import ProfessorForm from "./ProfessorForm"
+import ProfessorForm, { type ProfessorFormHandles } from "./ProfessorForm" // Importar ProfessorFormHandles
 
 export default function ProfessorList() {
-
     const [professoresAtivos, setProfessoresAtivos] = useState<Professor[]>([])
     const [professoresInativos, setProfessoresInativos] = useState<Professor[]>([])
     const [searchTermAtivos, setSearchTermAtivos] = useState<string>("")
     const [searchTermInativos, setSearchTermInativos] = useState<string>("")
+    const professorFormRef = useRef<ProfessorFormHandles>(null); // Ref para o ProfessorForm
 
     const fetchProfessores = async () => {
         try {
@@ -82,12 +82,25 @@ export default function ProfessorList() {
         }
     }
 
-    const handleFetchProfessores = async () => {
-        await fetchProfessores()
+    const handleFormSubmit = async () => { // Renomeado de handleFetchProfessores para clareza
+        await fetchProfessores();
+    };
+
+    const handleOpenAddForm = () => {
+        professorFormRef.current?.openDialog('add');
+    };
+
+    const handleOpenEditForm = (professor: Professor) => {
+        professorFormRef.current?.openDialog('edit', professor);
     };
     
     return (
         <div>
+        {/* Botão para adicionar novo professor */}
+        <button onClick={handleOpenAddForm} style={{ marginBottom: '20px', padding: '10px' }}>
+            Adicionar Novo Professor
+        </button>
+
         <h1>Lista de Professores Ativos</h1>
         <input
           type="text"
@@ -104,7 +117,7 @@ export default function ProfessorList() {
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Telefone</th>
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>CPF</th>
               <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Departamento</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Deletar/Editar</th>
+              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left', backgroundColor: '#f2f2f2' }}>Ações</th> {/* Alterado cabeçalho */}
             </tr>
           </thead>
           <tbody>
@@ -116,6 +129,7 @@ export default function ProfessorList() {
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.CPF}</td>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{prof.departamento}</td>
                 <td style={{ border: '1px solid #ddd', padding: '8px' }}> 
+                    <button onClick={() => handleOpenEditForm(prof)} style={{ marginRight: '5px' }}>Editar</button>
                     <button onClick={() => handleDelete(prof.id)}>Desativar</button>
                 </td>
               </tr>
@@ -159,7 +173,8 @@ export default function ProfessorList() {
           </tbody>
         </table>
 
-        <ProfessorForm onProfessorAdded={handleFetchProfessores} />
+        {/* Renderizar ProfessorForm e passar a ref e a função de callback */}
+        <ProfessorForm ref={professorFormRef} onFormSubmit={handleFormSubmit} />
       </div>
     )
   }
