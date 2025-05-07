@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import api from "../api/axios";
-import type { Disciplina } from "../types/interfaceDisciplina";
+
 import DisciplinaForm, { type DisciplinaFormHandles, type DisciplinaWithId } from "./DisciplinaForm"; // Importar handles e interface com ID
 
 export default function DisciplinaList() {
