@@ -1,0 +1,30 @@
+.navbar {
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
+
+.navbar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* Adicionado para centralizar os itens */
+}
+
+.nav-item {
+  margin-right: 15px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  border: 1px solid #ccc; /* Adicionada borda */
+  padding: 5px 10px;      /* Adicionado preenchimento para a borda */
+  border-radius: 4px;     /* Adicionado para cantos arredondados */
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
