@@ -52,7 +52,7 @@ const TurmaForm = forwardRef<TurmaFormHandles, TurmaFormProps>(({ onFormSubmit }
                     id_disciplina: String(turma.id_disciplina),
                     ativo: turma.ativo !== undefined ? turma.ativo : true,
                 });
-                setEditingTurmaCodigo(turma.codigo);
+                setEditingTurmaCodigo(turma.id?.toString());
             } else {
                 setFormData(defaultFormData);
                 setEditingTurmaCodigo(undefined);
